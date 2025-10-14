@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<style>/* ==================== RESET & BASE ==================== */
+<style>
+    /* ==================== RESET & BASE ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -92,6 +93,8 @@ body::before {
     pointer-events: none;
     z-index: 0;
 }
+
+/* ==================== LOADING SCREEN ==================== */
 
 /* ==================== ONBOARDING ==================== */
 #onboarding {
@@ -341,6 +344,10 @@ body::before {
     cursor: pointer;
     transition: all var(--transition-fast);
     backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
 }
 
 .notification-btn:active {
@@ -426,6 +433,10 @@ body::before {
     font-size: 16px;
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .edit-btn:active {
@@ -671,6 +682,7 @@ body::before {
 
 .alert-icon {
     font-size: 24px;
+    flex-shrink: 0;
 }
 
 .alert-content {
@@ -941,6 +953,10 @@ body::before {
     font-size: 20px;
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
 }
 
 .filter-btn:active {
@@ -998,6 +1014,14 @@ body::before {
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: all var(--transition-fast);
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+    text-align: left;
+    color: var(--text-primary);
+    font-size: 15px;
 }
 
 .setting-item:last-child {
@@ -1012,7 +1036,6 @@ body::before {
     color: var(--text-secondary);
     font-size: 14px;
 }
-
 .settings-btn {
     width: 100%;
     padding: var(--spacing-md);
@@ -1228,6 +1251,9 @@ body::before {
     color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-close:active {
@@ -1313,6 +1339,7 @@ body::before {
     font-size: 12px;
     font-weight: 600;
     color: var(--text-secondary);
+    text-align: center;
 }
 
 /* ==================== FORM INPUTS ==================== */
@@ -1482,6 +1509,20 @@ body::before {
     opacity: 0.3;
 }
 
+/* ==================== RECEIPT PREVIEW ==================== */
+.receipt-preview {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.receipt-thumbnail {
+    width: 100%;
+    max-width: 200px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--border-color);
+}
+
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -1557,37 +1598,9 @@ body::before {
     }
 }
 
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 400px) {
-    .quick-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .quick-actions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .analytics-cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .categories-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* ==================== RECEIPT PREVIEW ==================== */
-#expense-receipt-preview,
-#edit-receipt-preview {
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-}
-
-.receipt-thumbnail {
-    width: 100%;
-    max-width: 200px;
-    border-radius: var(--border-radius);
-    border: 2px solid var(--border-color);
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* ==================== LOADING STATES ==================== */
@@ -1657,59 +1670,220 @@ body.light::before {
     }
 }
 
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 400px) {
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .balance-amount {
+        font-size: 36px;
+    }
+    
+    .amount-field,
+    .big-input {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 360px) {
+    .quick-actions {
+        gap: var(--spacing-sm);
+    }
+    
+    .action-btn {
+        padding: var(--spacing-sm);
+    }
+    
+    .action-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .nav-label {
+        font-size: 10px;
+    }
+}
+
 /* ==================== PRINT STYLES ==================== */
 @media print {
     .bottom-nav,
     .notification-btn,
     .edit-btn,
-    .modal {
+    .modal,
+    .quick-actions,
+    .add-btn {
         display: none !important;
     }
+    
+    .screen {
+        position: static;
+        height: auto;
+        overflow: visible;
+    }
+    
+    .app-container {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==================== HIGH CONTRAST MODE ==================== */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: rgba(255, 255, 255, 0.3);
+        --text-secondary: #d0d0d0;
+    }
+    
+    body.light {
+        --border-color: rgba(0, 0, 0, 0.3);
+        --text-secondary: #404040;
+    }
+}
+
+/* ==================== FOCUS STYLES ==================== */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ==================== SCROLLBAR STYLING (Firefox) ==================== */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
 }
 </style>
 <body>
-   <!-- ONBOARDING SCREEN -->
-    <div id="onboarding" class="screen active">
+    <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="VoiseTiFi - Умное управление финансами с голосовым вводом">
+    <title>VoiseTiFi - Умный бюджет</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+    <!-- ONBOARDING SCREEN -->
+    <div id="onboarding" class="screen" style="display:none;">
         <div class="onboarding-content">
             <div class="onboarding-logo">
-                <div class="logo-icon">💰</div>
+                <div class="logo-icon" aria-label="Иконка приложения">&#128176;</div>
                 <h1>VoiseTiFi</h1>
                 <p>Умное управление финансами</p>
             </div>
             
+            <!-- STEP 1: Welcome -->
             <div class="onboarding-step active" data-step="1">
                 <h2>Добро пожаловать!</h2>
                 <p>Давайте настроим ваш бюджет</p>
-                <button class="btn-primary" onclick="nextOnboardingStep()">Начать</button>
+                <button class="btn-primary" onclick="nextOnboardingStep()" aria-label="Начать настройку">
+                    Начать
+                </button>
             </div>
 
+            <!-- STEP 2: Income -->
             <div class="onboarding-step" data-step="2">
                 <h2>Ваш ежемесячный доход</h2>
                 <div class="income-input-wrapper">
-                    <input type="number" id="monthly-income" placeholder="0" class="big-input">
-                    <div class="currency-selector">
-                        <button class="currency-btn active" data-currency="USD">$ USD</button>
-                        <button class="currency-btn" data-currency="TJS">SM TJS</button>
-                        <button class="currency-btn" data-currency="RUB">₽ RUB</button>
+                    <input 
+                        type="number" 
+                        id="monthly-income" 
+                        placeholder="0" 
+                        class="big-input"
+                        min="0"
+                        step="0.01"
+                        aria-label="Ежемесячный доход"
+                        required>
+                    <div class="currency-selector" role="group" aria-label="Выбор валюты">
+                        <button class="currency-btn active" 
+                                data-currency="USD" 
+                                data-rate="1" 
+                                data-symbol="$"
+                                aria-pressed="true">
+                            $ USD
+                        </button>
+                        <button class="currency-btn" 
+                                data-currency="TJS" 
+                                data-rate="10.7" 
+                                data-symbol="SM"
+                                aria-pressed="false">
+                            SM TJS
+                        </button>
+                        <button class="currency-btn" 
+                                data-currency="RUB" 
+                                data-rate="92" 
+                                data-symbol="&#8381;"
+                                aria-pressed="false">
+                            &#8381; RUB
+                        </button>
                     </div>
                 </div>
-                <button class="btn-primary" onclick="nextOnboardingStep()">Продолжить</button>
+                <button class="btn-primary" onclick="nextOnboardingStep()" aria-label="Продолжить">
+                    Продолжить
+                </button>
             </div>
 
+            <!-- STEP 3: Language -->
             <div class="onboarding-step" data-step="3">
                 <h2>Выберите язык</h2>
-                <div class="language-selector">
-                    <button class="lang-btn active" data-lang="ru">Русский</button>
-                    <button class="lang-btn" data-lang="en">English</button>
-                    <button class="lang-btn" data-lang="tj">Тоҷикӣ</button>
+                <div class="language-selector" role="group" aria-label="Выбор языка">
+                    <button class="lang-btn active" 
+                            data-lang="ru"
+                            aria-pressed="true">
+                        Русский
+                    </button>
+                    <button class="lang-btn" 
+                            data-lang="en"
+                            aria-pressed="false">
+                        English
+                    </button>
+                    <button class="lang-btn" 
+                            data-lang="tj"
+                            aria-pressed="false">
+                        Тоҷикӣ
+                    </button>
                 </div>
-                <button class="btn-primary" onclick="finishOnboarding()">Готово!</button>
+                <button class="btn-primary" onclick="finishOnboarding()" aria-label="Завершить настройку">
+                    Готово!
+                </button>
             </div>
         </div>
     </div>
 
     <!-- MAIN APP -->
-    <div id="app" class="app-container">
+    <div id="app" class="app-container" style="display:none;">
         
         <!-- HOME SCREEN -->
         <div id="home-screen" class="screen active">
@@ -1719,9 +1893,11 @@ body.light::before {
                         <h3 id="greeting-text">Добрый день</h3>
                         <p id="current-date">Понедельник, 13 октября</p>
                     </div>
-                    <button class="notification-btn" onclick="showNotifications()">
-                        <span class="notification-badge">2</span>
-                        🔔
+                    <button class="notification-btn" 
+                            onclick="showNotifications()"
+                            aria-label="Уведомления">
+                        <span class="notification-badge" aria-label="2 новых уведомления">2</span>
+                        <span aria-hidden="true">&#128276;</span>
                     </button>
                 </div>
             </header>
@@ -1731,46 +1907,52 @@ body.light::before {
                 <div class="balance-card">
                     <div class="balance-header">
                         <span>Ваш бюджет</span>
-                        <button class="edit-btn" onclick="editBudget()">✏️</button>
+                        <button class="edit-btn" 
+                                onclick="editBudget()"
+                                aria-label="Редактировать бюджет">
+                            &#9998;&#65039;
+                        </button>
                     </div>
-                    <div class="balance-amount" id="total-balance">$2,500</div>
+                    <div class="balance-amount" id="total-balance" aria-live="polite">$0</div>
                     <div class="balance-stats">
                         <div class="stat">
                             <span class="stat-label">Доход</span>
-                            <span class="stat-value positive" id="total-income">+$3,000</span>
+                            <span class="stat-value positive" id="total-income" aria-live="polite">+$0</span>
                         </div>
                         <div class="stat">
                             <span class="stat-label">Расход</span>
-                            <span class="stat-value negative" id="total-expense">-$500</span>
+                            <span class="stat-value negative" id="total-expense" aria-live="polite">-$0</span>
                         </div>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="budget-progress" style="width: 20%"></div>
+                    <div class="progress-bar" role="progressbar" aria-label="Прогресс бюджета">
+                        <div class="progress-fill" id="budget-progress" style="width: 0%"></div>
                     </div>
-                    <p class="progress-text">Потрачено <span id="spent-percent">20%</span> от бюджета</p>
+                    <p class="progress-text">
+                        Потрачено <span id="spent-percent">0%</span> от бюджета
+                    </p>
                 </div>
 
                 <!-- QUICK STATS -->
                 <div class="quick-stats">
                     <div class="stat-card">
-                        <div class="stat-icon">📅</div>
+                        <div class="stat-icon" aria-hidden="true">&#128197;</div>
                         <div class="stat-info">
                             <span class="stat-label">Сегодня</span>
-                            <span class="stat-value" id="today-spent">-$25</span>
+                            <span class="stat-value" id="today-spent">-$0</span>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📊</div>
+                        <div class="stat-icon" aria-hidden="true">&#128202;</div>
                         <div class="stat-info">
                             <span class="stat-label">Неделя</span>
-                            <span class="stat-value" id="week-spent">-$150</span>
+                            <span class="stat-value" id="week-spent">-$0</span>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📈</div>
+                        <div class="stat-icon" aria-hidden="true">&#128200;</div>
                         <div class="stat-info">
                             <span class="stat-label">Месяц</span>
-                            <span class="stat-value" id="month-spent">-$500</span>
+                            <span class="stat-value" id="month-spent">-$0</span>
                         </div>
                     </div>
                 </div>
@@ -1780,33 +1962,35 @@ body.light::before {
                     <h3>Быстрые действия</h3>
                 </div>
                 <div class="quick-actions">
-                    <button class="action-btn" onclick="openVoiceInput()">
-                        <div class="action-icon voice">🎤</div>
+                    <button class="action-btn" onclick="openVoiceInput()" aria-label="Голосовой ввод">
+                        <div class="action-icon voice" aria-hidden="true">&#127908;</div>
                         <span>Голос</span>
                     </button>
-                    <button class="action-btn" onclick="openAddWithReceipt()">
-                        <div class="action-icon receipt">🖼️</div>
+                    <button class="action-btn" onclick="openAddWithReceipt()" aria-label="Добавить с чеком">
+                        <div class="action-icon receipt" aria-hidden="true">&#128444;&#65039;</div>
                         <span>С чеком</span>
                     </button>
-                    <button class="action-btn" onclick="openAddIncome()">
-                        <div class="action-icon income">💰</div>
+                    <button class="action-btn" onclick="openAddIncome()" aria-label="Добавить доход">
+                        <div class="action-icon income" aria-hidden="true">&#128176;</div>
                         <span>Доход</span>
                     </button>
-                    <button class="action-btn" onclick="openAddExpense()">
-                        <div class="action-icon expense">💳</div>
+                    <button class="action-btn" onclick="openAddExpense()" aria-label="Добавить расход">
+                        <div class="action-icon expense" aria-hidden="true">&#128179;</div>
                         <span>Расход</span>
                     </button>
                 </div>
 
                 <!-- ALERTS -->
-                <div id="alerts-container" class="alerts-container">
+                <div id="alerts-container" class="alerts-container" role="alert" aria-live="polite">
                     <!-- Динамические алерты -->
                 </div>
 
                 <!-- RECENT TRANSACTIONS -->
                 <div class="section-header">
                     <h3>Последние операции</h3>
-                    <button class="view-all-btn" onclick="switchScreen('history')">Все →</button>
+                    <button class="view-all-btn" onclick="switchScreen('history')" aria-label="Посмотреть все операции">
+                        Все &#8594;
+                    </button>
                 </div>
                 <div class="transactions-list" id="recent-transactions">
                     <!-- Динамический контент -->
@@ -1817,48 +2001,68 @@ body.light::before {
         <!-- ANALYTICS SCREEN -->
         <div id="analytics-screen" class="screen">
             <header class="screen-header">
-                <h2>📊 Аналитика</h2>
+                <h2>&#128202; Аналитика</h2>
             </header>
 
             <div class="screen-content">
                 <!-- PERIOD SELECTOR -->
-                <div class="period-selector" id="period-tabs">
-                    <button class="period-btn" data-period="today">Сегодня</button>
-                    <button class="period-btn active" data-period="week">Неделя</button>
-                    <button class="period-btn" data-period="month">Месяц</button>
-                    <button class="period-btn" data-period="year">Год</button>
+                <div class="period-selector" id="period-tabs" role="tablist" aria-label="Выбор периода">
+                    <button class="period-btn" 
+                            data-period="today" 
+                            role="tab"
+                            aria-selected="false">
+                        Сегодня
+                    </button>
+                    <button class="period-btn active" 
+                            data-period="week"
+                            role="tab"
+                            aria-selected="true">
+                        Неделя
+                    </button>
+                    <button class="period-btn" 
+                            data-period="month"
+                            role="tab"
+                            aria-selected="false">
+                        Месяц
+                    </button>
+                    <button class="period-btn" 
+                            data-period="year"
+                            role="tab"
+                            aria-selected="false">
+                        Год
+                    </button>
                 </div>
 
                 <!-- STATS CARDS -->
                 <div class="analytics-cards">
                     <div class="analytics-card green">
                         <div class="card-label">Доход</div>
-                        <div class="card-value" id="analytics-income">+$3,000</div>
+                        <div class="card-value" id="analytics-income">+$0</div>
                     </div>
                     <div class="analytics-card red">
                         <div class="card-label">Расход</div>
-                        <div class="card-value" id="analytics-expense">-$500</div>
+                        <div class="card-value" id="analytics-expense">-$0</div>
                     </div>
                     <div class="analytics-card purple">
                         <div class="card-label">Баланс</div>
-                        <div class="card-value" id="analytics-balance">$2,500</div>
+                        <div class="card-value" id="analytics-balance">$0</div>
                     </div>
                     <div class="analytics-card blue">
                         <div class="card-label">В день</div>
-                        <div class="card-value" id="analytics-daily">-$17</div>
+                        <div class="card-value" id="analytics-daily">-$0</div>
                     </div>
                 </div>
 
                 <!-- LINE CHART -->
                 <div class="chart-container">
                     <h3>Динамика расходов</h3>
-                    <canvas id="line-chart"></canvas>
+                    <canvas id="line-chart" aria-label="График динамики расходов"></canvas>
                 </div>
 
                 <!-- PIE CHART -->
                 <div class="chart-container">
                     <h3>Структура расходов</h3>
-                    <canvas id="pie-chart"></canvas>
+                    <canvas id="pie-chart" aria-label="Круговая диаграмма расходов"></canvas>
                 </div>
 
                 <!-- TOP CATEGORIES -->
@@ -1874,18 +2078,18 @@ body.light::before {
                     <h3>Сравнение с прошлым месяцем</h3>
                     <div class="comparison-item">
                         <span>Расходы</span>
-                        <span class="comparison-value positive">↓ 15%</span>
+                        <span class="comparison-value positive">&#8595; 15%</span>
                     </div>
                     <div class="comparison-item">
                         <span>Доходы</span>
-                        <span class="comparison-value positive">↑ 8%</span>
+                        <span class="comparison-value positive">&#8593; 8%</span>
                     </div>
                 </div>
 
                 <!-- CALENDAR HEATMAP -->
                 <div class="chart-container">
                     <h3>Календарь расходов</h3>
-                    <div id="calendar-heatmap">
+                    <div id="calendar-heatmap" role="grid" aria-label="Календарь расходов">
                         <!-- Динамический контент -->
                     </div>
                 </div>
@@ -1895,26 +2099,34 @@ body.light::before {
         <!-- HISTORY SCREEN -->
         <div id="history-screen" class="screen">
             <header class="screen-header">
-                <h2>📝 История</h2>
+                <h2>&#128220; История</h2>
             </header>
 
             <div class="screen-content">
                 <!-- SEARCH AND FILTERS -->
                 <div class="search-container">
-                    <input type="text" id="search-input" placeholder="🔍 Поиск..." class="search-input">
+                    <input type="text" 
+                           id="search-input" 
+                           placeholder="&#128269; Поиск..." 
+                           class="search-input"
+                           aria-label="Поиск транзакций">
                 </div>
 
                 <div class="filters-container">
-                    <select id="type-filter" class="filter-select">
+                    <select id="type-filter" class="filter-select" aria-label="Фильтр по типу">
                         <option value="all">Все типы</option>
                         <option value="expense">Расходы</option>
                         <option value="income">Доходы</option>
                         <option value="transfer">Переводы</option>
                     </select>
-                    <select id="category-filter" class="filter-select">
+                    <select id="category-filter" class="filter-select" aria-label="Фильтр по категории">
                         <option value="all">Все категории</option>
                     </select>
-                    <button class="filter-btn" onclick="openDateFilter()">📅</button>
+                    <button class="filter-btn" 
+                            onclick="openDateFilter()"
+                            aria-label="Фильтр по дате">
+                        &#128197;
+                    </button>
                 </div>
 
                 <!-- TRANSACTIONS LIST -->
@@ -1926,15 +2138,15 @@ body.light::before {
                 <div class="period-totals">
                     <div class="total-item">
                         <span>Доходы:</span>
-                        <span class="positive" id="period-income">+$3,000</span>
+                        <span class="positive" id="period-income">+$0</span>
                     </div>
                     <div class="total-item">
                         <span>Расходы:</span>
-                        <span class="negative" id="period-expenses">-$500</span>
+                        <span class="negative" id="period-expenses">-$0</span>
                     </div>
                     <div class="total-item total-balance">
                         <span>Баланс:</span>
-                        <span id="period-balance">$2,500</span>
+                        <span id="period-balance">$0</span>
                     </div>
                 </div>
             </div>
@@ -1943,25 +2155,25 @@ body.light::before {
         <!-- SETTINGS SCREEN -->
         <div id="settings-screen" class="screen">
             <header class="screen-header">
-                <h2>⚙️ Настройки</h2>
+                <h2>&#9881;&#65039; Настройки</h2>
             </header>
 
             <div class="screen-content">
                 <!-- PROFILE SECTION -->
                 <div class="settings-section">
                     <h3 class="section-title">Профиль и бюджет</h3>
-                    <div class="setting-item" onclick="editMonthlyIncome()">
+                    <button class="setting-item" onclick="editMonthlyIncome()">
                         <span>Ежемесячный доход</span>
-                        <span class="setting-value" id="settings-income">$3,000</span>
-                    </div>
+                        <span class="setting-value" id="settings-income">$0</span>
+                    </button>
                     <div class="setting-item">
                         <span>Дневной лимит</span>
-                        <span class="setting-value" id="daily-limit">$100</span>
+                        <span class="setting-value" id="daily-limit">$0</span>
                     </div>
                     <div class="setting-item toggle-item">
                         <span>Уведомления о лимитах</span>
                         <label class="toggle">
-                            <input type="checkbox" id="limit-notifications" checked>
+                            <input type="checkbox" id="limit-notifications" checked aria-label="Включить уведомления о лимитах">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -1973,25 +2185,25 @@ body.light::before {
                     <div class="setting-item toggle-item">
                         <span>Тёмная тема</span>
                         <label class="toggle">
-                            <input type="checkbox" id="dark-theme">
+                            <input type="checkbox" id="dark-theme" checked aria-label="Включить тёмную тему">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
-                    <div class="setting-item" onclick="openLanguageSelector()">
+                    <button class="setting-item" onclick="openLanguageSelector()">
                         <span>Язык</span>
                         <span class="setting-value" id="current-language">Русский</span>
-                    </div>
-                    <div class="setting-item" onclick="openCurrencySelector()">
+                    </button>
+                    <button class="setting-item" onclick="openCurrencySelector()">
                         <span>Валюта</span>
                         <span class="setting-value" id="current-currency">USD $</span>
-                    </div>
+                    </button>
                 </div>
 
                 <!-- CATEGORIES -->
                 <div class="settings-section">
                     <h3 class="section-title">Категории</h3>
                     <button class="settings-btn" onclick="manageCategories()">
-                        Управление категориями →
+                        Управление категориями &#8594;
                     </button>
                 </div>
 
@@ -1999,7 +2211,7 @@ body.light::before {
                 <div class="settings-section">
                     <h3 class="section-title">Кредиты и долги</h3>
                     <button class="settings-btn" onclick="manageLoans()">
-                        Управление долгами →
+                        Управление долгами &#8594;
                     </button>
                 </div>
 
@@ -2007,7 +2219,7 @@ body.light::before {
                 <div class="settings-section">
                     <h3 class="section-title">Повторяющиеся платежи</h3>
                     <button class="settings-btn" onclick="manageRecurring()">
-                        Управление платежами →
+                        Управление платежами &#8594;
                     </button>
                 </div>
 
@@ -2015,7 +2227,7 @@ body.light::before {
                 <div class="settings-section">
                     <h3 class="section-title">Финансовые цели</h3>
                     <button class="settings-btn" onclick="manageGoals()">
-                        Управление целями →
+                        Управление целями &#8594;
                     </button>
                 </div>
 
@@ -2023,13 +2235,14 @@ body.light::before {
                 <div class="settings-section">
                     <h3 class="section-title">Резервные копии</h3>
                     <button class="settings-btn" onclick="exportData()">
-                        📤 Экспорт данных
+                        &#128228; Экспорт данных
                     </button>
-                    <button class="settings-btn" onclick="importData()">
-                        📥 Импорт данных
-                    </button>
+                    <label for="import-file" class="settings-btn" style="cursor:pointer;">
+                        &#128229; Импорт данных
+                    </label>
+                    <input type="file" id="import-file" accept=".json" style="display:none" aria-label="Импортировать данные">
                     <button class="settings-btn danger" onclick="clearAllData()">
-                        🗑️ Очистить все данные
+                        &#128465;&#65039; Очистить все данные
                     </button>
                 </div>
 
@@ -2039,21 +2252,21 @@ body.light::before {
                     <div class="setting-item toggle-item">
                         <span>Превышение бюджета</span>
                         <label class="toggle">
-                            <input type="checkbox" id="budget-notifications" checked>
+                            <input type="checkbox" id="budget-notifications" checked aria-label="Уведомления о превышении бюджета">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
                     <div class="setting-item toggle-item">
                         <span>Напоминания о долгах</span>
                         <label class="toggle">
-                            <input type="checkbox" id="debt-notifications" checked>
+                            <input type="checkbox" id="debt-notifications" checked aria-label="Напоминания о долгах">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
                     <div class="setting-item toggle-item">
                         <span>Еженедельный отчёт</span>
                         <label class="toggle">
-                            <input type="checkbox" id="weekly-report">
+                            <input type="checkbox" id="weekly-report" aria-label="Еженедельный отчёт">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -2067,128 +2280,246 @@ body.light::before {
                         <span class="setting-value">1.0.0</span>
                     </div>
                     <button class="settings-btn" onclick="openAbout()">
-                        Информация →
+                        Информация &#8594;
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- BOTTOM NAVIGATION -->
-        <nav class="bottom-nav">
-            <button class="nav-btn active" data-screen="home" onclick="switchScreen('home')">
-                <span class="nav-icon">🏠</span>
+        <nav class="bottom-nav" role="navigation" aria-label="Главное меню">
+            <button class="nav-btn active" 
+                    data-screen="home" 
+                    onclick="switchScreen('home')"
+                    aria-label="Главная"
+                    aria-current="page">
+                <span class="nav-icon" aria-hidden="true">&#127968;</span>
                 <span class="nav-label">Главная</span>
             </button>
-            <button class="nav-btn" data-screen="analytics" onclick="switchScreen('analytics')">
-                <span class="nav-icon">📊</span>
+            <button class="nav-btn" 
+                    data-screen="analytics" 
+                    onclick="switchScreen('analytics')"
+                    aria-label="Аналитика">
+                <span class="nav-icon" aria-hidden="true">&#128202;</span>
                 <span class="nav-label">Аналитика</span>
             </button>
-            <button class="nav-btn add-btn" onclick="openAddModal()">
-                <span class="nav-icon">➕</span>
+            <button class="nav-btn add-btn" 
+                    onclick="openAddModal()"
+                    aria-label="Добавить операцию">
+                <span class="nav-icon" aria-hidden="true">&#10133;</span>
             </button>
-            <button class="nav-btn" data-screen="history" onclick="switchScreen('history')">
-                <span class="nav-icon">📝</span>
+            <button class="nav-btn" 
+                    data-screen="history" 
+                    onclick="switchScreen('history')"
+                    aria-label="История">
+                <span class="nav-icon" aria-hidden="true">&#128220;</span>
                 <span class="nav-label">История</span>
             </button>
-            <button class="nav-btn" data-screen="settings" onclick="switchScreen('settings')">
-                <span class="nav-icon">⚙️</span>
+            <button class="nav-btn" 
+                    data-screen="settings" 
+                    onclick="switchScreen('settings')"
+                    aria-label="Настройки">
+                <span class="nav-icon" aria-hidden="true">&#9881;&#65039;</span>
                 <span class="nav-label">Настройки</span>
             </button>
         </nav>
     </div>
 
     <!-- ADD MODAL -->
-    <div id="add-modal" class="modal">
+    <div id="add-modal" class="modal" role="dialog" aria-labelledby="add-modal-title" aria-modal="true">
         <div class="modal-content modal-bottom">
             <div class="modal-header">
-                <h3>Добавить</h3>
-                <button class="modal-close" onclick="closeAddModal()">✕</button>
+                <h3 id="add-modal-title">Добавить</h3>
+                <button class="modal-close" onclick="closeAddModal()" aria-label="Закрыть">
+                    &#10005;
+                </button>
             </div>
             
-            <div class="modal-tabs">
-                <button class="modal-tab active" data-tab="expense">Расход</button>
-                <button class="modal-tab" data-tab="income">Доход</button>
-                <button class="modal-tab" data-tab="transfer">Перевод</button>
-                <button class="modal-tab" data-tab="loan">Кредит</button>
+            <div class="modal-tabs" role="tablist">
+                <button class="modal-tab active" 
+                        data-tab="expense"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="expense-tab">
+                    Расход
+                </button>
+                <button class="modal-tab" 
+                        data-tab="income"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="income-tab">
+                    Доход
+                </button>
+                <button class="modal-tab" 
+                        data-tab="transfer"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="transfer-tab">
+                    Перевод
+                </button>
+                <button class="modal-tab" 
+                        data-tab="loan"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="loan-tab">
+                    Кредит
+                </button>
             </div>
 
             <!-- EXPENSE TAB -->
-            <div class="tab-content active" id="expense-tab">
-                <div class="categories-grid" id="expense-categories">
+            <div class="tab-content active" id="expense-tab" role="tabpanel">
+                <div class="categories-grid" id="expense-categories" role="group" aria-label="Категории расходов">
                     <!-- Динамический контент -->
                 </div>
                 <div class="amount-input">
-                    <input type="number" id="expense-amount" placeholder="0.00" class="amount-field">
+                    <input type="number" 
+                           id="expense-amount" 
+                           placeholder="0.00" 
+                           class="amount-field"
+                           min="0"
+                           step="0.01"
+                           aria-label="Сумма расхода"
+                           required>
                 </div>
-                <input type="text" id="expense-desc" placeholder="Описание (необязательно)" class="desc-input">
-                <input type="file" id="expense-receipt" accept="image/*" style="display:none">
-                <button class="attach-btn" onclick="document.getElementById('expense-receipt').click()">
-                    🖼️ Прикрепить чек
+                <input type="text" 
+                       id="expense-desc" 
+                       placeholder="Описание (необязательно)" 
+                       class="desc-input"
+                       aria-label="Описание расхода">
+                <input type="file" 
+                       id="expense-receipt" 
+                       accept="image/*" 
+                       style="display:none"
+                       aria-label="Загрузить чек">
+                <button class="attach-btn" 
+                        onclick="document.getElementById('expense-receipt').click()"
+                        aria-label="Прикрепить чек">
+                    &#128444;&#65039; Прикрепить чек
                 </button>
-                <div id="expense-receipt-preview"></div>
-                <button class="btn-primary btn-large" onclick="saveExpense()">Сохранить</button>
+                <div id="expense-receipt-preview" class="receipt-preview"></div>
+                <button class="btn-primary btn-large" onclick="saveExpense()">
+                    Сохранить
+                </button>
             </div>
 
             <!-- INCOME TAB -->
-            <div class="tab-content" id="income-tab">
-                <div class="categories-grid" id="income-categories">
+            <div class="tab-content" id="income-tab" role="tabpanel">
+                <div class="categories-grid" id="income-categories" role="group" aria-label="Категории доходов">
                     <!-- Динамический контент -->
                 </div>
                 <div class="amount-input">
-                    <input type="number" id="income-amount" placeholder="0.00" class="amount-field">
+                    <input type="number" 
+                           id="income-amount" 
+                           placeholder="0.00" 
+                           class="amount-field"
+                           min="0"
+                           step="0.01"
+                           aria-label="Сумма дохода"
+                           required>
                 </div>
-                <input type="text" id="income-desc" placeholder="Описание" class="desc-input">
-                <button class="btn-primary btn-large" onclick="saveIncome()">Сохранить</button>
+                <input type="text" 
+                       id="income-desc" 
+                       placeholder="Описание" 
+                       class="desc-input"
+                       aria-label="Описание дохода">
+                <button class="btn-primary btn-large" onclick="saveIncome()">
+                    Сохранить
+                </button>
             </div>
 
             <!-- TRANSFER TAB -->
-            <div class="tab-content" id="transfer-tab">
-                <select id="transfer-from" class="select-input">
+            <div class="tab-content" id="transfer-tab" role="tabpanel">
+                <select id="transfer-from" class="select-input" aria-label="Из категории">
                     <option>Из категории</option>
                 </select>
-                <select id="transfer-to" class="select-input">
+                <select id="transfer-to" class="select-input" aria-label="В категорию">
                     <option>В категорию</option>
                 </select>
                 <div class="amount-input">
-                    <input type="number" id="transfer-amount" placeholder="0.00" class="amount-field">
+                    <input type="number" 
+                           id="transfer-amount" 
+                           placeholder="0.00" 
+                           class="amount-field"
+                           min="0"
+                           step="0.01"
+                           aria-label="Сумма перевода"
+                           required>
                 </div>
-                <input type="text" id="transfer-desc" placeholder="Примечание" class="desc-input">
-                <button class="btn-primary btn-large" onclick="saveTransfer()">Сохранить</button>
+                <input type="text" 
+                       id="transfer-desc" 
+                       placeholder="Примечание" 
+                       class="desc-input"
+                       aria-label="Примечание к переводу">
+                <button class="btn-primary btn-large" onclick="saveTransfer()">
+                    Сохранить
+                </button>
             </div>
 
             <!-- LOAN TAB -->
-            <div class="tab-content" id="loan-tab">
-                <input type="text" id="loan-name" placeholder="Название (кому/откуда)" class="desc-input">
+            <div class="tab-content" id="loan-tab" role="tabpanel">
+                <input type="text" 
+                       id="loan-name" 
+                       placeholder="Название (кому/откуда)" 
+                       class="desc-input"
+                       aria-label="Название кредита"
+                       required>
                 <div class="amount-input">
-                    <input type="number" id="loan-amount" placeholder="Сумма" class="amount-field">
+                    <input type="number" 
+                           id="loan-amount" 
+                           placeholder="Сумма" 
+                           class="amount-field"
+                           min="0"
+                           step="0.01"
+                           aria-label="Сумма кредита"
+                           required>
                 </div>
-                <input type="date" id="loan-date" class="desc-input">
-                <input type="number" id="loan-percent" placeholder="Процент (необязательно)" class="desc-input">
-                <button class="btn-primary btn-large" onclick="saveLoan()">Сохранить</button>
+                <input type="date" 
+                       id="loan-date" 
+                       class="desc-input"
+                       aria-label="Дата кредита">
+                <input type="number" 
+                       id="loan-percent" 
+                       placeholder="Процент (необязательно)" 
+                       class="desc-input"
+                       min="0"
+                       step="0.01"
+                       aria-label="Процент кредита">
+                <button class="btn-primary btn-large" onclick="saveLoan()">
+                    Сохранить
+                </button>
             </div>
         </div>
     </div>
 
     <!-- VOICE INPUT MODAL -->
-    <div id="voice-modal" class="modal">
+    <div id="voice-modal" class="modal" role="dialog" aria-labelledby="voice-modal-title" aria-modal="true">
         <div class="modal-content modal-center">
-            <button class="modal-close" onclick="closeVoiceModal()">✕</button>
+            <button class="modal-close" onclick="closeVoiceModal()" aria-label="Закрыть">
+                &#10005;
+            </button>
             <div class="voice-animation">
                 <div class="voice-circle"></div>
-                <div class="voice-icon">🎤</div>
+                <div class="voice-icon" aria-hidden="true">&#127908;</div>
             </div>
             <h3 id="voice-status">Нажмите, чтобы говорить</h3>
-            <p id="voice-text"></p>
-            <button class="btn-primary" id="voice-btn" onclick="startVoiceRecognition()">Начать</button>
+            <p id="voice-text" aria-live="polite"></p>
+            <button class="btn-primary" 
+                    id="voice-btn" 
+                    onclick="startVoiceRecognition()"
+                    aria-label="Начать голосовой ввод">
+                Начать
+            </button>
         </div>
     </div>
 
     <!-- TRANSACTION DETAIL MODAL -->
-    <div id="detail-modal" class="modal">
+    <div id="detail-modal" class="modal" role="dialog" aria-labelledby="detail-modal-title" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Детали операции</h3>
-                <button class="modal-close" onclick="closeDetailModal()">✕</button>
+                <h3 id="detail-modal-title">Детали операции</h3>
+                <button class="modal-close" onclick="closeDetailModal()" aria-label="Закрыть">
+                    &#10005;
+                </button>
             </div>
             <div id="transaction-detail">
                 <!-- Динамический контент -->
@@ -2196,11 +2527,12 @@ body.light::before {
         </div>
     </div>
 
-    <input type="file" id="import-file" accept=".json" style="display:none">
-
+    <!-- SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script >
-        // ==================== STATE MANAGEMENT ====================
+    <script src="app.js"></script>
+</body>
+<script>
+     // ==================== STATE MANAGEMENT ====================
 let state = {
     user: {
         monthlyIncome: 0,
@@ -3637,6 +3969,5 @@ if (state.isFirstLaunch && state.transactions.length === 0) {
         }
     }, 2000);
 }
-    </script>
-</body>
+</script>
 </html>
